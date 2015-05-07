@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<!-- 公用任务线程池定义  -->
+<!-- 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		最少线程数
+	    <property name="corePoolSize" value="1" />
+	    最大线程数
+	    <property name="maxPoolSize" value="1" />
+	    允许的空闲时间(秒)
+	    <property name="keepAliveSeconds" value="60" />
+	    队列容量
+	    <property name="queueCapacity" value="50" />
+	 </bean> --> 
+
+
+    <!-- 调度器  -->  
+<!--     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="triggers">  
+            <list>  
+                 触发器列表  
+                <ref bean="statusCheckTask" />  
+            </list>  
+        </property>  
+    </bean>   -->
+    	    	 
+	<!-- 统计报表采集触发器-->
+<!-- 	<bean id="statusCheckTask" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="statusCheckJob" />
+		</property>
+		<property name="cronExpression">
+			<value>0 */2 * * * ?</value>
+		</property>
+	</bean> -->
+	
+<!-- 	<bean id="statusCheckJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject"><ref bean="monitorService" /></property>
+		<property name="targetMethod" value="dominitorAndReport" />
+		<property name="concurrent" value="false"/> 
+	</bean> -->
+	
+		
+</beans>

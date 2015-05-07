@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+    xsi:schemaLocation="   
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd    
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+     http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!--  pool  -->
+		<property name="initialSize" value="${pool.initialSize}" />
+		<property name="maxActive" value="${pool.maxActive}" />
+		<property name="maxIdle" value="${pool.maxIdle}" />
+		<property name="maxWait" value="${pool.maxWait}" />
+		<property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
+	</bean>	
+
+	<!-- 引入支持jdbc的事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 注解事务 -->
+	<tx:annotation-driven />
+	
+	<!-- 配置SqlSessionFactoryBean -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- mapper和resultmap配置路径 -->   
+       	<property name="mapperLocations">  
+            <list>
+            <!-- 表示在com.yeepay.mapper包或以下所有目录中，以.xml结尾所有文件 --> 
+             <value> classpath:com/hummingbird/maaccount/mapper/*.xml</value > 
+            </list>       
+       	</property>
+	</bean>
+	
+	<!--构造sqlSessionTemplate(支持批量) -->
+	<!-- <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />	
+		<constructor-arg index="1" value="BATCH" />			
+	</bean> -->
+	
+	<!-- 自动扫描com.pass.mapper包下的Mapper接口,并实现其功能  -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hummingbird.maaccount.mapper,com.hummingbird.commonbiz.mapper" />
+		<!-- <property name="sessioinFactory" ref="sqlSessionFactory"></property> -->
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>	
+	
+
+</beans>
