@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 import com.hummingbird.common.exception.DataInvalidException;
 import com.hummingbird.common.exception.ValidateException;
 import com.hummingbird.common.face.statuscheck.AbstractStatusCheckResult;
-import com.hummingbird.common.face.statuscheck.SmsReporter;
 import com.hummingbird.common.util.ExHttpClientUtils;
+import com.hummingbird.common.face.statuscheck.SmsReporter;
 import com.hummingbird.common.util.JsonUtil;
 import com.hummingbird.common.util.PropertiesUtil;
 import com.hummingbird.common.util.SmsSenderUtil;
@@ -45,7 +45,9 @@ public class MonitorServiceImpl implements MonitorService {
 		//具体项目情况
 		PropertiesUtil pu = new PropertiesUtil();
 		String monitorarr = pu.getProperty("monitor.list");
+		
 		String[] monitorlist = monitorarr.split(",");
+		
 		BatchResultModel brm = new BatchResultModel();
 		for (int i = 0; i < monitorlist.length; i++) {
 			String monitorapp = monitorlist[i];
@@ -75,6 +77,7 @@ public class MonitorServiceImpl implements MonitorService {
 			for (Iterator iterator = monitorresult.getError().iterator(); iterator.hasNext();) {
 				ResultModel rm = (ResultModel) iterator.next();
 				String monitorapp = ObjectUtils.toString(rm.get("appid"));
+			
 				if(monitorapp.equalsIgnoreCase("smsreceive")&&!rm.isSuccessed()){
 					try {
 						restartCmpp();
